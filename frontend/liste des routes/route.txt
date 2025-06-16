@@ -9,3 +9,5 @@ GET	                  rentals/:id	            Détail d’une location spécifiq
 POST	                rentals               	Création d’une nouvelle location
 PUT	                  rentals/:id	            Mise à jour d’une location existante
 GET                  	user/:id	              Détail d’un utilisateur
+
+test
