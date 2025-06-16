@@ -1,7 +1,6 @@
 
 # 🏡 ChâTop - Portail de mise en relation locataires / propriétaires
 
-![Bannière ChâTop](https://via.placeholder.com/1200x300.png?text=Camping-car+%C3%A0+la+campagne+%7C+Ch%C3%A2Top+Logo)
 
 ---
 
