@@ -1,0 +1,11 @@
+Méthode HTTP	        Route / Endpoint	      Description (optionnelle)
+
+POST	                auth/register	          Inscription utilisateur
+POST	                auth/login	            Connexion utilisateur
+POST	                messages	              Création d’un message
+GET	                  auth/me	                Récupération des infos utilisateur connecté
+GET	                  rentals	                Liste de toutes les locations
+GET	                  rentals/:id	            Détail d’une location spécifique
+POST	                rentals               	Création d’une nouvelle location
+PUT	                  rentals/:id	            Mise à jour d’une location existante
+GET                  	user/:id	              Détail d’un utilisateur
