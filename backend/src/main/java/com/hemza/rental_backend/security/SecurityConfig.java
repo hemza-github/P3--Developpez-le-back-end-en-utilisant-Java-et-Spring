@@ -1,31 +1,47 @@
 package com.hemza.rental_backend.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-// Indique que cette classe contient des configurations Spring (équivalent à un fichier XML de config)
 @Configuration
 public class SecurityConfig {
 
-  // Définit le bean de configuration de la chaîne de filtres de sécurité Spring
+  @Autowired
+  private JwtAuthenticationFilter jwtAuthenticationFilter;
+
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-        // 🔐 Désactive la protection CSRF (utile pour les API REST qui ne sont pas
-        // exposées à un navigateur)
         .csrf(csrf -> csrf.disable())
-        // 🔓 Autorise toutes les requêtes HTTP sans authentification
         .authorizeHttpRequests(auth -> auth
-            .anyRequest().permitAll())
-        // 🧾 Active le mode HTTP Basic (ici, vide car aucun endpoint n’est sécurisé)
-        .httpBasic(basic -> {
-        });
+            // 🔓 Autoriser les endpoints d'authentification
+            .requestMatchers("/api/auth/**").permitAll()
 
-        
-    // 🔄 Retourne l’objet de configuration construit
+            // 🔓 Autoriser la récupération des rentals
+            .requestMatchers(HttpMethod.GET, "/api/rentals").authenticated()
+
+            .requestMatchers(HttpMethod.POST, "/api/messages").authenticated()
+
+            // ✅ Autoriser les images dans /uploads/**
+            .requestMatchers("/uploads/**").permitAll()
+
+            // 🔓 Autoriser les requêtes OPTIONS (CORS preflight)
+            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+            // 🔐 Tout le reste est protégé
+            .anyRequest().authenticated())
+        // 🛑 Désactive les sessions
+        .sessionManagement(sess -> sess
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        // 🔐 Ajout du filtre JWT
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
     return http.build();
   }
-
 }

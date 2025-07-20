@@ -2,6 +2,7 @@ package com.hemza.rental_backend.service;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -73,4 +74,11 @@ public class UserService {
     // Génère et retourne le token JWT
     return jwtService.generateToken(user.getEmail());
   }
+
+  public User getCurrentUser() {
+  String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+  return userRepository.findByEmail(email)
+      .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'email : " + email));
+}
 }

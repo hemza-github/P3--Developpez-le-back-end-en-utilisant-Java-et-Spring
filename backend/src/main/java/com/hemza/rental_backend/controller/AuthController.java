@@ -3,10 +3,14 @@ package com.hemza.rental_backend.controller;
 
 import com.hemza.rental_backend.dto.AuthSuccess;
 import com.hemza.rental_backend.dto.RegisterRequestDTO;
+import com.hemza.rental_backend.model.Rental;
 import com.hemza.rental_backend.repository.UserRepository;
 import com.hemza.rental_backend.security.JwtService;
 import com.hemza.rental_backend.dto.LoginRequestDTO;
+import com.hemza.rental_backend.service.RentalService;
 import com.hemza.rental_backend.service.UserService;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +30,8 @@ public class AuthController {
 
   @Autowired
   private UserRepository userRepository;
+  @Autowired
+  private RentalService rentalService;
 
   /**
    * Enregistre un nouvel utilisateur et retourne un token JWT.
@@ -79,4 +85,6 @@ public class AuthController {
       return ResponseEntity.badRequest().body(e.getMessage());
     }
   }
+
+
 }
